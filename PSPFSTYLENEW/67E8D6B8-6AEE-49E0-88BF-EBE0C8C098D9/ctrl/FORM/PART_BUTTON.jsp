@@ -1,0 +1,4 @@
+<button id="<%=strCId%>${item.uniqueId}" title="<#if item.getCapPSLanguageRes()??><ibiz5:message code="${item.getCapPSLanguageRes().getLanResTag()}" text="${item.caption}"></ibiz5:message><#else>${item.caption}</#if>"  class="ibiz-form-${item.getDetailType()?lower_case} ${item.getColCssClass()} btn <#if item.isShowCaption()><#else>btn-icon-only</#if> <#if item.getPSSysCss()??> ${item.getPSSysCss().getCssName()}</#if>" >
+        <#if item.getPSSysImage()??><#assign img=item.getPSSysImage()><#if img.getCssClass()?? && (img.getCssClass()?length gt 0)><i class="${img.getCssClass()}"></i></#if></#if>   
+        <#if item.isShowCaption()><span ><#if item.getCapPSLanguageRes()??><ibiz5:message code="${item.getCapPSLanguageRes().getLanResTag()}" text="${item.caption}"></ibiz5:message><#else>${item.caption}</#if></span></#if>
+</button>

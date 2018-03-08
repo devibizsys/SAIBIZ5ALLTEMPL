@@ -1,0 +1,7 @@
+<jsp:include page="../../templ/${curcssfile?lower_case}.jsp" flush="true" >
+	<jsp:param name="controller" value="/${app.getAppFolder()}/${view.getPSAppModule().codeName}/${view.codeName}.do"/>
+	<jsp:param name="parturl" value="../jsp/${view.getPSAppModule().codeName?lower_case}/${view.codeName?lower_case}_part.jsp"/>
+	<jsp:param name="cid" value="<%=p.getCId()%>"/>
+	<jsp:param name="embed" value="<%=strEmbed%>"/>
+        <jsp:param name="ifchild" value="<%=strIFChild%>"/>
+</jsp:include>

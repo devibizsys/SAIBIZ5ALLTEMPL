@@ -1,0 +1,1 @@
+<iframe id="<%=strCId%>${item.uniqueId}" style="min-height:${item.getContentHeight()?c}px;width:100%;border:0;frameborder:0;scrolling: no;"  frameborder="no"  border="0" marginwidth="0" marginheight="0" scrolling="no" 				allowtransparency="yes"></iframe>

@@ -1,0 +1,1 @@
+{xtype:'toolbar',items: [<#list items as item><#if (item_index>0) >,</#if>${item.code}</#list>] }

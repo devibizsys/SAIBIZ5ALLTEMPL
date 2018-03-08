@@ -1,0 +1,1 @@
+new IBizFormGroup({id:this.getCId2()+'${item.uniqueId}',name:'${item.name}',titleBarCloseMode:'${item.getTitleBarCloseMode()}',form:form})

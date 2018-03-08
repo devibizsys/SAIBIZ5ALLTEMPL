@@ -1,0 +1,3 @@
+{text: "<#if item.getCapPSLanguageRes()??><ibiz5:message code="${item.getCapPSLanguageRes().getLanResTag()}" text="${item.caption}"></ibiz5:message><#else>${item.caption}</#if>", width: ${item.width}, dataIndex: '${item.dataItemName}' <#if !item.isEnableSort()>,sortable:false</#if>
+<#if (item.getPSCodeList()??)&&(item.getPSCodeList().getCodeListType()=='STATIC')>,renderer:'render${ctrl.name}_${item.dataItemName}'</#if>
+}

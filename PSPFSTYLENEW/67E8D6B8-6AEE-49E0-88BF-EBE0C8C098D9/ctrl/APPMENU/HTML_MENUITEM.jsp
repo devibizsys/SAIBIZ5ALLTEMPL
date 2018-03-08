@@ -1,0 +1,1 @@
+{text: '${item.caption}'<#if item.getPSAppFunc()??><#assign _appfunc=item.getPSAppFunc()>,srftag:{title:'${item.caption}',appfuncid:'${_appfunc.id}'},handler: 'onClickAppMenuItem'</#if><#if items??>, menu: [<#list items as item><#if (item_index>0) >,</#if>${item.code}</#list>]</#if>}
