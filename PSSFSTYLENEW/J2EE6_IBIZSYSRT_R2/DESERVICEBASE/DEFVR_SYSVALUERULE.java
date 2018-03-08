@@ -1,0 +1,1 @@
+checkFieldSysValueRule("${item.getDEFName()?upper_case}", et, bTempMode,"${srfjavastring('${item.getPSSysValueRule().getId()}')}","${srfjavastring('${item.ruleInfo}')}",<#if item.isKeyCond()>false<#else>true</#if>)

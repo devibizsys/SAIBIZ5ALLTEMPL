@@ -1,0 +1,1 @@
+checkFieldRecursionRule("${item.getDEFName()?upper_case}","${item.getMajorPSDataEntity().name}", et, bTempMode,"${item.ruleInfo}")
