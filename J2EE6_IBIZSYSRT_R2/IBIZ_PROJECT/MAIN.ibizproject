@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<IBIZPROJECT ID="${srfxmlvalue('${pub.id}')}" TYPE="SRV" PUBPRJ="srv_${srfxmlvalue('${pub.codeName}')}_pub" USRPRJ="srv_${srfxmlvalue('${pub.codeName}')}_usr" CODENAME="${srfxmlvalue('${pub.codeName}')}" PKGCODENAME="${srfxmlvalue('${pub.getPKGCodeName()}')}" >
+	<IBIZFILETYPES>
+		<IBIZFILETYPE ID="SF_SERVICE"  NAME="Service对象" />
+		<IBIZFILETYPE ID="SF_DAO"  NAME="DAO对象" />
+		<IBIZFILETYPE ID="SF_ENTITY"  NAME="Entity对象" />
+		<IBIZFILETYPE ID="SF_DEMODEL"  NAME="实体模型对象" />
+		<IBIZFILETYPE ID="SF_CODELISTMODEL"  NAME="代码表模型对象" />
+		<IBIZFILETYPE ID="SF_DEACMODEL"  NAME="实体自动填充模型对象" />
+		<IBIZFILETYPE ID="SF_DEDSMODEL"  NAME="实体数据集合模型对象" />
+		<IBIZFILETYPE ID="SF_DEDQMODEL"  NAME="实体数据查询模型对象" />
+		<IBIZFILETYPE ID="SF_DELOGICMODEL"  NAME="实体逻辑模型对象" />
+		<IBIZFILETYPE ID="SF_DEUIACTIONMODEL"  NAME="实体界面行为模型对象" />
+		<IBIZFILETYPE ID="SF_WFMODEL"  NAME="流程模型对象" />
+		<IBIZFILETYPE ID="SF_WFVERMODEL"  NAME="流程版本模型对象" />
+		<IBIZFILETYPE ID="SF_CONTROLLER"  NAME="后台视图控制器(JAVA)" />
+		<IBIZFILETYPE ID="SF_CTRLHANDLER"  NAME="后台控件处理(JAVA)" />
+		<IBIZFILETYPE ID="SF_CTRLITEMHANDLER"  NAME="后台控件子项处理(JAVA)" />
+		<IBIZFILETYPE ID="SF_CTRLMODEL"  NAME="后台控件模型(JAVA)" />
+	</IBIZFILETYPES>
+	<PSMODULES>
+		<#list sys.getAllPSSystemModules() as module>
+		<PSMODULE ID="${srfxmlvalue('${module.id}')}" NAME="${srfxmlvalue('${module.name}')}" CODENAME="${srfxmlvalue('${module.codeName}')}"/>
+		</#list>
+	</PSMODULES>
+	<PSCODELISTS>
+	
+		<#list sys.getAllPSCodeLists() as codelist>
+		<#if !codelist.isSubSysCodeList()>
+		<PSCODELIST NAME="${srfxmlvalue('${codelist.name}')}" CODENAME="${srfxmlvalue('${codelist.codeName}')}"<#if codelist.getPSSystemModule()??> PSMODULEID="${srfxmlvalue('${codelist.getPSSystemModule().id}')}"</#if>>
+			<IBIZFILES>
+				<IBIZFILE TYPE="SF_CODELISTMODEL" FOLDER="srv/codelist"  PUB="${codelist.codeName}CodeListModel.java" />
+			</IBIZFILES>
+		</PSCODELIST>
+		</#if>
+		</#list>
+	</PSCODELISTS>
+	
+	
+	<PSDATAENTITIES>
+		<#list sys.getAllPSDataEntities() as de>
+		<#if !de.isSubSysDE()>
+		<PSDATAENTITY ID="${srfxmlvalue('${de.id}')}" NAME="${srfxmlvalue('${de.name}')}" CODENAME="${srfxmlvalue('${de.codeName}')}" LOGICNAME="${srfxmlvalue('${de.logicName}')}" PSMODULEID="${srfxmlvalue('${de.getPSSystemModule().id}')}">
+			<IBIZFILES>
+				<IBIZFILE TYPE="SF_SERVICE"  FOLDER="srv/${de.getPSSystemModule().codeName?lower_case}/service" PUB="${de.codeName}Service.java"/>
+				<IBIZFILE TYPE="SF_DAO" FOLDER="srv/${de.getPSSystemModule().codeName?lower_case}/dao"  PUB="${de.codeName}DAO.java"/>
+				<IBIZFILE TYPE="SF_ENTITY"  FOLDER="srv/${de.getPSSystemModule().codeName?lower_case}/entity"  PUB="${de.codeName}.java"/>
+				<IBIZFILE TYPE="SF_DEMODEL" FOLDER="srv/${de.getPSSystemModule().codeName?lower_case}/demodel"  PUB="${de.codeName}DEModel.java"/>
+			</IBIZFILES>
+			<#comment>
+			<PSDEFIELDS>
+			<#list de.getPSDEFields() as defield>
+				<PSDEFIELD NAME="${srfxmlvalue('${defield.name}')}" CODENAME="${srfxmlvalue('${defield.codeName}')}" LOGICNAME="${srfxmlvalue('${defield.logicName}')}" >
+					<IBIZFILES>
+						<IBIZFILE TYPE="SF_ENTITY" LOCATION="void set${defield.codeName}"/>
+						<IBIZFILE TYPE="SF_ENTITY" LOCATION="${srfjavatype(defield.stdDataType)} get${defield.codeName}"/>
+					</IBIZFILES>
+				</PSDEFIELD>
+			</#list>
+			</PSDEFIELDS>
+			</#comment>
+			<PSDEACTIONS>
+			<#list de.getAllPSDEActions() as deaction>	
+				<#if deaction.getActionType()=='USERCUSTOM'>
+					<PSDEACTION NAME="${srfxmlvalue('${deaction.name}')}" CODENAME="${srfxmlvalue('${deaction.codeName}')}"  LOGICNAME="${srfxmlvalue('${deaction.logicName}')}" >
+						<IBIZFILES>
+							<IBIZFILE TYPE="SF_SERVICE" LOCATION="void ${srfmethodname('${deaction.codeName}')}"/>
+						</IBIZFILES>
+					</PSDEACTION>
+				</#if>
+				<#if deaction.getActionType()=='DELOGIC'>
+					<PSDEACTION NAME="${srfxmlvalue('${deaction.name}')}" CODENAME="${srfxmlvalue('${deaction.codeName}')}"  LOGICNAME="${srfxmlvalue('${deaction.logicName}')}" >
+						<IBIZFILES>
+							<IBIZFILE TYPE="SF_SERVICE" LOCATION="void ${srfmethodname('${deaction.codeName}')}"/>
+						</IBIZFILES>
+					</PSDEACTION>
+				</#if>
+			</#list>  
+ 			</PSDEACTIONS>
+			<PSDELOGICS>
+			<#list de.getAllPSDELogics() as delogic>
+				<PSDELOGIC NAME="${srfxmlvalue('${delogic.name}')}" CODENAME="${srfxmlvalue('${delogic.codeName}')}" >
+					<IBIZFILES>
+						<IBIZFILE TYPE="SF_DELOGICMODEL" FOLDER="srv/${de.getPSSystemModule().codeName?lower_case}/demodel" PUB="${de.codeName}${delogic.codeName}LogicModel.java" />
+					</IBIZFILES>
+				</PSDELOGIC>
+			</#list>
+			</PSDELOGICS>
+			<PSDEACMODES>
+			<#list de.getAllPSDEACModes() as deacmode>
+				<PSDEACMODE NAME="${srfxmlvalue('${deacmode.name}')}" CODENAME="${srfxmlvalue('${deacmode.codeName}')}" >
+					<IBIZFILES>
+						<IBIZFILE TYPE="SF_DEACMODEL" FOLDER="srv/${de.getPSSystemModule().codeName?lower_case}/demodel" PUB="${de.codeName}${deacmode.codeName}ACModel.java" />
+					</IBIZFILES>
+				</PSDEACMODE>
+			</#list>
+			</PSDEACMODES>
+			<PSDEDATAQUERYIES>
+			<#list de.getAllPSDEDataQueries() as dedataquery>
+				<PSDEDATAQUERY NAME="${srfxmlvalue('${dedataquery.name}')}" CODENAME="${srfxmlvalue('${dedataquery.codeName}')}" >
+					<IBIZFILES>
+						<IBIZFILE TYPE="SF_DEDQMODEL" FOLDER="srv/${de.getPSSystemModule().codeName?lower_case}/demodel" PUB="${de.codeName}${dedataquery.codeName}DQModel.java"/>
+					</IBIZFILES>
+				</PSDEDATAQUERY>
+ 			</#list>
+			</PSDEDATAQUERYIES>
+			<PSDEDATASETS>
+			<#list de.getAllPSDEDataSets() as dedataset>
+				<PSDEDATASET NAME="${srfxmlvalue('${dedataset.name}')}" CODENAME="${srfxmlvalue('${dedataset.codeName}')}" >
+					<IBIZFILES>
+						<IBIZFILE TYPE="SF_DEDSMODEL" FOLDER="srv/${de.getPSSystemModule().codeName?lower_case}/demodel" PUB="${de.codeName}${dedataset.codeName}DSModel.java" />
+					</IBIZFILES>
+				</PSDEDATASET>
+ 			</#list>
+			</PSDEDATASETS>
+			
+			<PSDEUIACTIONS>
+			<#list de.getAllPSDEUIActions() as deuiaction>
+			<#if (deuiaction.getUIActionMode()=='BACKEND')>
+				<PSDEUIACTION NAME="${srfxmlvalue('${deuiaction.name}')}" CODENAME="${srfxmlvalue('${deuiaction.codeName}')}" >
+					<IBIZFILES>
+						<IBIZFILE TYPE="SF_DEUIACTIONMODEL" FOLDER="srv/${de.getPSSystemModule().codeName?lower_case}/demodel" PUB="${de.codeName}${deuiaction.codeName}UIActionModel.java" />
+					</IBIZFILES>
+				</PSDEUIACTION>
+			</#if>
+ 			</#list>
+			</PSDEUIACTIONS>
+			<PSDEPRINTS>
+			
+			</PSDEPRINTS>
+			<PSDEREPORTS>
+			
+			</PSDEREPORTS>
+			<PSDEWFS>
+			
+			</PSDEWFS>
+		</PSDATAENTITY>
+		</#if>
+		</#list>
+	</PSDATAENTITIES>
+	<PSWORKFLOWS>
+		<#list sys.getAllPSWorkflows() as workflow>
+		<PSWORKFLOW NAME="${srfxmlvalue('${workflow.name}')}" CODENAME="${srfxmlvalue('${workflow.codeName}')}"  >
+			<IBIZFILES>
+				<IBIZFILE TYPE="SF_WFMODEL" FOLDER="srv/workflow"  PUB="${workflow.codeName}WFModel.java" />
+			</IBIZFILES>
+			<#if workflow.getPSWFVersions()??>
+			<PSWFVERSIONS>
+			<#list workflow.getPSWFVersions() as wfversion>
+				<PSWFVERSION NAME="${srfxmlvalue('${wfversion.name}')}" CODENAME="${srfxmlvalue('${wfversion.codeName}')}" >
+					<IBIZFILES>
+						<IBIZFILE TYPE="SF_WFVERMODEL" FOLDER="srv/workflow" PUB="${wfversion.codeName}WFVersionModel.java" />
+					</IBIZFILES>
+				</PSWFVERSION>
+ 			</#list>
+ 			</PSWFVERSIONS>
+			</#if>
+		</PSWORKFLOW>
+		</#list>
+	</PSWORKFLOWS>
+	<PSAPPLICATIONS>
+		<#list sys.getAllPSApps() as app>
+			<PSAPPLICATION ID="${srfxmlvalue('${app.id}')}" TYPE="APP" NAME="${srfxmlvalue('${app.name}')}" CODENAME="${srfxmlvalue('${app.getPKGCodeName()}')}" >
+				<PSAPPMODULES>
+				<#list app.getAllPSAppModules() as module>
+					<PSAPPMODULE ID="${srfxmlvalue('${module.id}')}" NAME="${srfxmlvalue('${module.name}')}" CODENAME="${srfxmlvalue('${module.codeName}')}"/>
+				</#list>
+				</PSAPPMODULES>
+				<PSAPPVIEWS>
+					<#list app.getAllPSAppViews() as appview>
+					<#if appview.viewType=='APPINDEXVIEW'>
+					<PSAPPINDEXVIEW ID="${srfxmlvalue('${appview.id}')}"  VIEWTYPE="${appview.viewType}" <#if appview.title??>TITLE="${srfxmlvalue('${appview.title}')}"</#if> CODENAME="${srfxmlvalue('${appview.codeName}')}" PSAPPMODULEID="${srfxmlvalue('${appview.getPSAppModule().id}')}" >
+					<#elseif appview.viewType=='APPPORTALVIEW'>
+					<PSAPPPORTALVIEW ID="${srfxmlvalue('${appview.id}')}"  VIEWTYPE="${appview.viewType}" <#if appview.title??>TITLE="${srfxmlvalue('${appview.title}')}"</#if> CODENAME="${srfxmlvalue('${appview.codeName}')}" PSAPPMODULEID="${srfxmlvalue('${appview.getPSAppModule().id}')}" >
+					<#else>
+					<PSAPPDEVIEW ID="${srfxmlvalue('${appview.id}')}"  VIEWTYPE="${appview.viewType}" <#if appview.title??>TITLE="${srfxmlvalue('${appview.title}')}"</#if> CODENAME="${srfxmlvalue('${appview.codeName}')}" PSAPPMODULEID="${srfxmlvalue('${appview.getPSAppModule().id}')}" PSDEVIEWNAME="${srfxmlvalue('${appview.getPSDEViewName()}')}" <#if appview.getPSDataEntity()??>PSDEID="${srfxmlvalue('${appview.getPSDataEntity().id}')}" PSDENAME="${srfxmlvalue('${appview.getPSDataEntity().name}')}"</#if> >
+					</#if>
+						<IBIZFILES>
+							<IBIZFILE TYPE="SF_CONTROLLER" FOLDER="${app.getAppFolder()?lower_case}/${appview.getPSAppModule().codeName?lower_case}/controller" PUB="${appview.codeName}Controller.java" />
+						</IBIZFILES>
+						<PSCONTROLS>
+						<#if appview.getAllPSControls()??>
+							<#list appview.getAllPSControls() as ctrl>
+							<#if ctrl.getPSControlType().isAjaxControl()>
+							<PSCONTROL NAME="${srfxmlvalue('${ctrl.name}')}" TYPE="${ctrl.getPSControlType().id}">
+							<#assign item=ctrl>
+                                                        <#if ctrl.getModelScope()=='DE' && ctrl.getPSDataEntity()??>
+								<#assign de=ctrl.getPSDataEntity()>
+                                                        </#if>
+								<IBIZFILES>
+									<IBIZFILE TYPE="SF_CTRLHANDLER" FOLDER="${app.getAppFolder()?lower_case}/${appview.getPSAppModule().codeName?lower_case}/ctrlhandler"  PUB="${appview.codeName}${srfclassname('${ctrl.name}')}Handler.java" />
+									<#if item.getControlType() == 'FORM' || item.getControlType() == 'SEARCHFORM'>
+									<#list item.getPSDEFormItems() as formitem>
+									<#if (formitem.getItemHandlerType()??) && (formitem.getItemHandlerType()?length>0)>
+									<IBIZFILE TYPE="SF_CTRLITEMHANDLER" FOLDER="${app.getAppFolder()?lower_case}/srv/${de.getPSSystemModule().codeName?lower_case}/ctrlhandler"  PUB="${de.codeName}${item.codeName}${srfclassname('${item.getControlType()}')}${srfclassname('${formitem.name}')}Handler.java" />
+									</#if>
+									</#list>									
+									<#if item.getPSDEFormItemUpdates()??>
+									<#list item.getPSDEFormItemUpdates() as fiupdate>   
+             						<IBIZFILE TYPE="SF_CTRLITEMHANDLER" FOLDER="${app.getAppFolder()?lower_case}/srv/${de.getPSSystemModule().codeName?lower_case}/ctrlhandler"  PUB="${de.codeName}${item.codeName}${srfclassname('${item.getControlType()}')}${srfclassname('${fiupdate.codeName}')}Handler.java" />
+									</#list>
+									</#if>									
+									</#if>
+									<#if ctrl.getModelScope()=='DE' && ctrl.getPSDataEntity()??>
+									<IBIZFILE TYPE="SF_CTRLMODEL" FOLDER="${app.getAppFolder()?lower_case}/srv/${de.getPSSystemModule().codeName?lower_case}/ctrlmodel" PUB="${de.codeName}${item.codeName}${srfclassname('${item.getControlType()}')}Model.java"/>
+									</#if>
+									<#if ctrl.getModelScope()=='APP'>
+									<IBIZFILE TYPE="SF_CTRLMODEL" FOLDER="${app.getAppFolder()?lower_case}/srv/sys/ctrlmodel" PUB="${app.getPKGCodeName()}${item.codeName}${srfclassname('${item.getControlType()}')}Model.java"/>
+									</#if>
+									<#if ctrl.getModelScope()=='VIEW'>
+									<IBIZFILE TYPE="SF_CTRLMODEL" FOLDER="${app.getAppFolder()?lower_case}/${appview.getPSAppModule().codeName?lower_case}/ctrlmodel" PUB="${appview.codeName}${srfclassname('${item.name}')}Model.java"/>
+									</#if>
+								</IBIZFILES>
+							</PSCONTROL>
+							</#if>
+							</#list>
+						</#if>
+						</PSCONTROLS>
+					<#if appview.viewType=='APPINDEXVIEW'>
+					</PSAPPINDEXVIEW>
+					<#elseif appview.viewType=='APPPORTALVIEW'>
+					</PSAPPPORTALVIEW>
+					<#else>
+					</PSAPPDEVIEW>
+					</#if>
+					</#list>
+				</PSAPPVIEWS>
+			</PSAPPLICATION>
+		</#list>
+	</PSAPPLICATIONS> 
+</IBIZPROJECT>

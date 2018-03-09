@@ -1,0 +1,1 @@
+checkFieldRegExRule("${item.getDEFName()?upper_case}", et, bTempMode,"${srfjavastring('${item.getRegExCode()}')}","${item.ruleInfo}")

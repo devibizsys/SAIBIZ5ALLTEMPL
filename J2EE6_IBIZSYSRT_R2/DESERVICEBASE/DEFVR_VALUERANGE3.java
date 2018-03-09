@@ -1,0 +1,1 @@
+checkFieldValueRangeRule2("${item.getDEFName()?upper_case}", et, bTempMode,"${srfjavastring('${item.getValues()}')}","${srfjavastring('${item.getSeparator()}')}","${srfjavastring('${item.ruleInfo}')}",<#if item.isKeyCond()>false<#else>true</#if>)
