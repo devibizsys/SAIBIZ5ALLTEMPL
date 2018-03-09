@@ -249,4 +249,82 @@
 2017.2.18</br>
 1.统一资源rt环境安装支持更新操作</br>
 2.发布支持PGSQL和PPAS</br>
-3.实体DAO提供实体QueryCode标识宏定义</br>
+3.实体DAO提供实体QueryCode标识宏定义</br></br>
+二、前台模</br>
+2017.12.2</br>
+1.无数据按钮的权限控</br>
+	JSPPART_HEADE</br>
+	TOOLBAR__PART/DEUIACTIO</br></br>
+
+2017.12.</br>
+1.支持表格列更</br>
+	PSPFSTYLECODE/GRIDVIEWCONTROLLER_BAS</br>
+2.多语言标记bug修</br>
+	PSPFSTYLECODE/JSP_HEADE</br>
+3.多数据视图控制器功能优化</br>
+	PSPFSTYLECODE/MDVIEWCONTROLLER_BAS</br></br>
+
+2017.11.</br>
+1.表单项支持固定列宽设</br>
+	PSPFCTRLTEMPL/FORM__HTML/FORMITE</br>
+	PSPFCTRLTEMPL/FORM__PART/FORMITE</br>
+	PSPFCTRLTEMPL/FORM__HTML/GROUPPANE</br>
+	PSPFCTRLTEMPL/FORM__PART/GROUPPANE</br></br>
+
+
+2017.7.1</br>
+1.支持快速重构和完成重</br>
+    PSPFAPPTEMPL/APP_CREATEAP</br>
+    PSPFAPPTEMPL/APP_RESETPU</br>
+    
+2017.6.2</br>
+1.表单文本框编辑器支持单位显</br>
+	PSPFEDITORTEMPL/TEXTBOX__FORMITEM__HTM</br>
+	PSPFEDITORTEMPL/TEXTBOX__FORMITEM__PAR</br>
+2.多语言支</br>
+	PSPFSTYLECODE/CONTROLLER_BAS</br>
+	PSPFSTYLECODE/JSP_HEADE</br>
+	PSPFSTYLECODE/JSPPART_HEADE</br>
+	PSPFCTRLTEMPL/APPMENU__PART/MENUITE</br>
+	PSPFCTRLTEMPL/FORM__PAR</br>
+	PSPFCTRLTEMPL/FORM__PART/BUTTO</br>
+	PSPFCTRLTEMPL/FORM__PART/DRUIPAR</br>
+	PSPFCTRLTEMPL/FORM__PART/FORMITE</br>
+	PSPFCTRLTEMPL/GRID__CONTROLLE</br>
+	PSPFCTRLTEMPL/SEARCHFORM__PAR</br>
+	PSPFCTRLTEMPL/TOOLBAR__PART/DEUIACTIO</br>
+	PSPFAPPTEMPL/APP_LAN(新增)</br>
+3.树导航视图（IFrame）树节点支持右键菜</br>
+	PSPFSTYLECODE/EXPVIEWCONTROLLER_BAS</br>
+4.表格视图支持默认数据不加</br>
+	PSPFSTYLECODE/GRIDVIEWCONTROLLER_BAS</br>
+5.表单相关部件提供父组件标</br>
+	PSPFCTRLTEMPL/FORM__CONTROLLER/DRUIPAR</br>
+	PSPFCTRLTEMPL/FORM__CONTROLLER/TABPAG</br>
+6.前端app项目默认web.xml文件生</br>
+	PSPFAPPTEMPL/APP_WEBXML(新增</br>
+	PSPFAPPTEMPL/APP_WEBXML2(新增)</br></br>
+
+2017.4.27</br>
+1.首页视图控制器模板调整，支持"打开HTML页面"、"执行JavaScript"功能类型(APPINDEXVIEW__CONTROLLER)</br></br>
+
+2017.4.14</br>
+1.DEFAULT_EX_PGGRID表单成员支持系统样式配置（GROUPPANEL，BUTTON，FORMITEM,RAWITEM,TABPANEL）</br></br>
+
+2017.4.7</br>
+1.表单布局调整，取消table布局（只修改了DEFAULT_EX_PGGRID，DEFAULT已经还原回去，运行一段时间在更新DEFAULT）</br>
+2.表格操作列支持（DEFAULT：GRIDVIEWCONTROLLER_BASE，GRID__CONTROLLER，DEFAULT_EX_PGGRID：GRID__CONTROLLER-COLUMN）</br>
+3.列表视图数据导入地址后追加实体名称（CONTROLLER_BASE）</br></br>
+
+2017.4.7</br>
+1.表单布局调整，取消table布局（修改表单部件的fromitem的html代码模板）</br>
+2.数据选择编辑器html模板bug修复（</div>标签位置错误）</br></br>
+
+
+2017.3.2</br>
+1.即时预览功能支持（JSP_HEADER、JSP_BOTTOM）</br>
+</br>
+2017.2.28</br>
+1.实体表单分组支持是否收缩（part、controller）</br>
+2.实体表单分页支持动态显示配置（part、controller）（需要前端脚本支持，添加了IBizFormTabPage）</br>
+
