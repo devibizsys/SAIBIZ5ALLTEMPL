@@ -1,5 +1,5 @@
 # SAIBIZ5ALLTEMPL
-#一、后台模板</br>
+# **一、后台模板**</br>
 2018.2.28</br>
 1.访问控制体系支持“当前系统角色及实体角色”模式</br>
 	DEMODELBASE</br></br>
@@ -250,7 +250,7 @@
 1.统一资源rt环境安装支持更新操作</br>
 2.发布支持PGSQL和PPAS</br>
 3.实体DAO提供实体QueryCode标识宏定义</br></br>
-#二、前台模版</br>
+# **二、前台模版**</br>
 2017.12.2</br>
 1.无数据按钮的权限控</br>
 	JSPPART_HEADE</br>
