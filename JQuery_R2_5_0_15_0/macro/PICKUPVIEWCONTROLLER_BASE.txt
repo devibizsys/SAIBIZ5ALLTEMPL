@@ -1,0 +1,27 @@
+,getPickupViewItem:function(arg){
+       var viewmode=arg.viewid;
+       if(!viewmode)viewmode='';
+<#assign viewitems=view.getPSControls("pickupviewpanel",10)>
+<#list viewitems as viewitem>
+       if(viewmode=='${viewitem.name}'){
+          return {viewurl:'/${viewitem.getPSAppDEView().getPSAppModule().codeName?lower_case}/${viewitem.getPSAppDEView().codeName?lower_case}.jsp',embedviewid:'${viewitem.getEmbedViewId()}'};
+       }
+</#list>
+
+       return null;
+ }
+<#if view.hasPSControl('treeexpbar')>
+<#assign _tree=view.getPSControl('treeexpbar').getPSDETree()>
+,getNavViewParam:function(arg){
+       var nodetype=arg.nodetype;
+       if(!nodetype)nodetype='';
+<#list _tree.getPSDETreeNodes() as _treenode>
+<#if _treenode.getNavViewParam()??>
+       if(nodetype=='${_treenode.nodeType}'){
+          return ${_treenode.getNavViewParam().toString()};
+       }
+</#if>
+</#list>
+       return null;
+}
+</#if>

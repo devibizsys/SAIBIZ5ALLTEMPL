@@ -1,0 +1,38 @@
+<%if (!p.isEmbed()) {%>
+<%@include file="../../lib/lib-common-script.jsp"%>
+<%@include file="../../lib/lib-user-script.jsp"%>
+<#list alljsfiles as jfile>
+<%@include file="../../lib/${jfile?lower_case}lib-script.jsp"%>
+</#list>
+<%@include file="../../lib/${curjsfile?lower_case}lib-script.jsp"%>
+<#list allembedviews as embedview>
+<#if embedview.getPSViewType().id == "SUBSYSDEVIEW">
+<#assign subappview=embedview.getPSSubAppView()>
+<script src='${'$'}{web}/${embedview.getPSSubAppRef().getFolderName()?lower_case}/js/${subappview.getAppModuleCodeName()}/${subappview.name}ControllerBase.js' type='text/javascript'></script>
+<script src='${'$'}{web}/${embedview.getPSSubAppRef().getFolderName()?lower_case}/js/${subappview.getAppModuleCodeName()}/${subappview.name}Controller.js' type='text/javascript'></script>
+<#else>
+<script src='${'$'}{ctx}/js/${embedview.getPSAppModule().codeName}/${embedview.codeName}ControllerBase.js?v=<#if embedview.isPSDEView()>${embedview.getPSDataEntity().getVersion()?c}_</#if>${embedview.getLastModifyTimeStr()?replace('-','')?replace(':','')?replace(' ','')}' type='text/javascript'></script>
+<script src='${'$'}{ctx}/js/${embedview.getPSAppModule().codeName}/${embedview.codeName}Controller.js?v=<#if embedview.isPSDEView()>${embedview.getPSDataEntity().getVersion()?c}_</#if>${embedview.getLastModifyTimeStr()?replace('-','')?replace(':','')?replace(' ','')}' type='text/javascript'></script>
+</#if>
+</#list>
+<script src='${'$'}{ctx}/js/${view.getPSAppModule().codeName}/${view.codeName}ControllerBase.js?v=<#if view.isPSDEView()>${view.getPSDataEntity().getVersion()?c}_</#if>${view.getLastModifyTimeStr()?replace('-','')?replace(':','')?replace(' ','')}' type='text/javascript'></script>
+<script src='${'$'}{ctx}/js/${view.getPSAppModule().codeName}/${view.codeName}Controller.js?v=<#if view.isPSDEView()>${view.getPSDataEntity().getVersion()?c}_</#if>${view.getLastModifyTimeStr()?replace('-','')?replace(':','')?replace(' ','')}' type='text/javascript'></script>
+<script>
+var controller = null;
+function getController()
+{
+   return controller;
+}
+jQuery(document).ready(function(){
+	Metronic.init();
+<#if view.getPSViewType().id=='APPINDEXVIEW'>
+	Layout.init();
+	QuickSidebar.init(); 
+</#if>
+        controller = new ${view.codeName}Controller({appctx:'${'$'}{ctx2}',webctx:'${'$'}{web}'});
+	controller.init({parentMode:<%=p.getParentMode()%>,parentData:<%=p.getParentData()%>});
+});
+</script>
+</body>
+</html>
+<%}%>

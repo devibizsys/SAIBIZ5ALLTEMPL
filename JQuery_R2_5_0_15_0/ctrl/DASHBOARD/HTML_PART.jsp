@@ -1,0 +1,1 @@
+${item.name}:{viewTemplate: {title: '${item.title}',items:[{xtype: '${viewfullname?lower_case}_${item.name?lower_case}'}]}}

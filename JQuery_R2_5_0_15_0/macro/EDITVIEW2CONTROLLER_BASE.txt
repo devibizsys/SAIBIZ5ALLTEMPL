@@ -1,0 +1,15 @@
+,getDRItemView:function(arg){
+       if(!arg)arg={};
+       var drmode=arg.viewid;
+       if(!drmode)drmode='';
+<#list view.getAppViewRefModes() as viewref>
+<#if (viewref?index_of("DRITEM:")==0)>
+<#assign newdataview=view.getRefPSAppView(viewref,true) >
+<#assign newdataviewref=view.getPSAppViewRef(viewref,true) >
+      if(drmode=='${viewref?substring(7)}'){
+          return {viewurl:'${newdataview.pageUrl}'<#if (newdataview.getSubAppFolderName()??)>,subapp:'${newdataview.getSubAppFolderName()}'</#if>,embedviewid:'${newdataviewref.getEmbedId()}'<#if newdataviewref.getViewParam()??>,viewparam:${newdataviewref.getViewParam().toString()}</#if>};
+      	}
+</#if>
+</#list>
+       return null;
+ }

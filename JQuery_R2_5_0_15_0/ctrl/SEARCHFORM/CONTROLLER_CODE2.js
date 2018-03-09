@@ -1,0 +1,1 @@
+{enableAdvanceSearch:<#if ctrl.isEnableAdvanceSearch()>true<#else>false</#if><#if ctrl.getPSDataEntity()??><#assign de=ctrl.getPSDataEntity()>,dename:'${de.getName()}'</#if>}

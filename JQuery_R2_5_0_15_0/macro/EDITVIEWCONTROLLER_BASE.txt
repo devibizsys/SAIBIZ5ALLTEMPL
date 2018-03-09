@@ -1,0 +1,45 @@
+,onInit:function(){
+   arguments.callee.$.onInit.call(this);
+   ${form.code}
+}
+<#if view.getPSDataEntity()??>
+<#assign de=view.getPSDataEntity()>
+<#assign form=view.getPSControl('form')>
+,onFormFieldChanged: function (fieldname, field, value) {
+   var me=this;
+   var form=me.getForm();
+<#list form_fdlogics as fdlogic>
+   ${fdlogic}
+</#list>
+<#if form.getPSDEFormItems()??>
+<#list form.getPSDEFormItems() as formitem>
+<#if formitem.getPSDEFormItemUpdate()??>
+    if(fieldname=='${formitem.name}'){
+       form.updateFormItems({srfufimode:'${formitem.getPSDEFormItemUpdate().codeName}'});
+    }
+</#if>
+</#list>
+</#if>
+}
+</#if>
+<#if !view.isEnableNewData()>
+,isEnableNewData:function(){return false;}
+</#if>
+<#if !view.isEnableEditData()>
+,isEnableEditData:function(){return false;}
+</#if>
+<#if !view.isEnableRemoveData()>
+,isEnableRemoveData:function(){return false;}
+</#if>
+<#if (view.isEnablePrint())>
+,getPrintDataView:function(arg){
+<#if view.getPSDEPrint()??>
+      if(true){
+           arg['srfprintid']='${view.getPSDEPrint().id}';
+           var view={viewparam:arg};
+	   return view;
+      }
+</#if>
+      return null;
+   }
+</#if>

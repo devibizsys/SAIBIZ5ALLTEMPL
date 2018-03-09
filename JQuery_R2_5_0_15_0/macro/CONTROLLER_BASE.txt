@@ -1,0 +1,111 @@
+construct: function(config) {
+    if(!config)config={};
+    if(!config.appctx)config.appctx='';
+    if(!config.containerid)config.containerid='';
+    arguments.callee.$.construct.call(this,this.getDefaultCfg(config));
+    this.regCodeLists(config);
+    this.regUICounters(config);
+    this.regUIActions(config);
+    this.regUpdatePanels(config);
+    this.regControllers(config);
+}
+<#if viewlogics?size gt 0>
+,onPrepareViewLogics:function(){
+    var me=this;
+<#list viewlogics as viewlogic>
+    me.regViewLogic(new IBizViewLogic({tag:'${viewlogic.obj.name?lower_case}',trigger:'${viewlogic.obj.getLogicTrigger()}',ctrler:me<#if viewlogic.obj.getLogicTrigger()=='TIMER'>,timer:${viewlogic.obj.getTimer()?c}</#if><#if viewlogic.obj.getLogicTrigger()=='VIEWEVENT'><#if viewlogic.obj.getPSViewCtrlName()??>,eventctrl:'${viewlogic.obj.getPSViewCtrlName()?lower_case}'</#if>,eventname:'${viewlogic.obj.getEventNames()}'</#if> ,handler:${viewlogic.code}}));
+</#list>
+}
+</#if>
+,regCodeLists:function(config)
+{
+ <#list view.getRelatedPSCodeList(false) as codelist>
+<#if codelist.getCodeListType()=='STATIC'>
+     /*${codelist.name}*/
+     this.regCodeList(new IBizCodeList({id: '${srfparamname('${sys.codeName}')}_${codelist.codeName}',datas:[<#if codelist.getPSCodeItems()??><#list codelist.getPSCodeItems() as codeitem><#if (codeitem_index>0)>,</#if>{text:<#if codeitem.getTextPSLanguageRes()??>$IGM('${codeitem.getTextPSLanguageRes().getShortLanResTag()}','${codeitem.text}')<#else>'${codeitem.text}'</#if>,value:'${codeitem.value}',realtext:<#if codeitem.getTextPSLanguageRes()??>$IGM('${codeitem.getTextPSLanguageRes().getShortLanResTag()}','${codeitem.text}')<#else>'${codeitem.text}'</#if><#if codeitem.getParentValue()??>,parentvalue='${codeitem.getParentValue()}'</#if><#if codeitem.getColor()??>,color:'${codeitem.getColor()}'</#if><#if codeitem.getTextCls()??>,textcls:'${codeitem.getTextCls()}'</#if><#if codeitem.getIconCls()??>,iconcls:'${codeitem.getIconCls()}'</#if>}</#list></#if>]}));
+</#if>
+</#list>
+}
+,regUICounters:function(config)
+{
+<#list view.getPSSysCounterRefs() as syscounterref>
+<#assign syscounter=syscounterref.getPSSysCounter()>
+     /*${syscounter.name}*/
+     this.regUICounter(new IBizCounter({tag: '${syscounterref.tag}',counterid:'${syscounter.id}',counterparam:${syscounterref.getRefMode().toString()},ctrler:this,timer:${syscounter.timer?c}}));
+</#list>
+}
+,regUpdatePanels:function(config)
+{
+     var me=this;
+<#list view.getPSUpdatePanels() as updatepanel>
+     /*${updatepanel.name}*/
+     me.regUpdatePanel(IBiz.createUpdatePanel({id:me.getCId2()+'${updatepanel.name}',name:'${updatepanel.name}',ctrler:this,timer:${updatepanel.timer?c}}));
+</#list>
+}
+,regControllers:function(config)
+{
+  var cid=config.containerid;
+    if(cid!='')cid=cid+'_';
+<#list curembedviewrefs as embedviewref>
+<#if embedviewref.getRefPSAppView().getPSViewType().id=="SUBSYSDEVIEW">
+<#assign subsysdeview=embedviewref.getRefPSAppView()>
+    this.regController(new ${subsysdeview.codeName}Controller({pcontroller:this,subapp:'${subsysdeview.getPSSubAppRef().getFolderName()}',appctx:config.webctx+'/${subsysdeview.getPSSubAppRef().getPSSubApp().getAppPKGName()}',containerid:cid+'${embedviewref.getEmbedId()}'}));
+<#else>
+    this.regController(new ${embedviewref.getRefPSAppView().codeName}Controller({pcontroller:this,appctx:config.appctx,containerid:cid+'${embedviewref.getEmbedId()}'}));
+</#if>
+</#list>
+}
+,regUIActions:function(config)
+{
+ <#list view.getPSUIActions() as uiaction>
+  var uiaction_${uiaction_index} = {"type":"${uiaction.getUIActionType()}","tag":"${uiaction.getUIActionTag()}"<#if (uiaction.getActionTarget()!="")>,"actiontarget":"${uiaction.getActionTarget()}"</#if>
+<#if uiaction.getUIActionType() == 'DEUIACTION'>
+<#if uiaction.getUIActionMode()!="SYS">
+,"actionmode":"${uiaction.getUIActionMode()}"
+<#if uiaction.getUIActionMode()=="BACKEND">
+,"timeout":${uiaction.getTimeout()?c}<#if uiaction.getConfirmMsg()??>,"confirmmsg":"${uiaction.getConfirmMsg()}"</#if>
+</#if>
+<#comment><!--开始：向导界面--></#comment>
+<#if uiaction.getFrontProcessType()=="WIZARD">
+,"fronttype":"${uiaction.frontProcessType}"
+<#if uiaction.getFrontPSAppView(view)??>
+<#assign frontview=uiaction.getFrontPSAppView(view)>,"frontview":{"viewurl":"/${frontview.getPSAppModule().codeName?lower_case}/${frontview.codeName?lower_case}.jsp","width":${frontview.getWidth()?c},"height":${frontview.getHeight()?c},"title":"${frontview.title}",openMode:'${frontview.openMode}'<#if frontview.isRedirectView()>,redirectview:true,backendurl:"/${frontview.getPSAppModule().codeName}/${frontview.codeName}.do"</#if>}
+</#if>                  
+</#if>
+<#comment><!--结束：向导界面--></#comment>
+<#comment><!--开始：打开网页--></#comment>
+<#if uiaction.getFrontProcessType()=="OPENHTMLPAGE">
+<#if uiaction.getCodeName()=="ImportExcel">
+<#if view.getPSDataEntity()??>
+<#assign de=view.getPSDataEntity()>
+,"fronttype":"WIZARD","frontview":{"viewurl":"${uiaction.getHtmlPageUrl()}${de.name}","width":900,"height":400,"title":"",openMode:'POPUPMODAL'}
+</#if>
+<#else>
+,"fronttype":"${uiaction.frontProcessType}","htmlpageurl":"${uiaction.getHtmlPageUrl()}"
+</#if>
+</#if>
+<#comment><!--结束：打开网页--></#comment>
+</#if>
+</#if>
+<#if uiaction.getUIActionType() == 'WFUIACTION'>
+,"actionmode":"${uiaction.getUIActionMode()}"
+<#if uiaction.getUIActionMode()=="WFBACKEND">
+,"timeout":${uiaction.getTimeout()?c}<#if uiaction.getConfirmMsg()??>,"confirmmsg":"${uiaction.getConfirmMsg()}"</#if>
+</#if>
+<#comment><!--开始：向导界面--></#comment>
+<#if uiaction.getFrontProcessType()=="WIZARD">
+,"fronttype":"${uiaction.frontProcessType}"
+<#if uiaction.getFrontPSAppView(view)??>
+<#assign frontview=uiaction.getFrontPSAppView(view)>,"frontview":{"viewurl":"/${frontview.getPSAppModule().codeName?lower_case}/${frontview.codeName?lower_case}.jsp","viewparam":{"srfwfiatag":"${uiaction.getUIActionTag()}","srfwfstep":"${view.getWFStepValue()}"},"width":${frontview.getWidth()?c},"height":${frontview.getHeight()?c},"title":"${frontview.title}",openMode:'${frontview.openMode}'}
+</#if>                  
+</#if>
+<#comment><!--结束：向导界面--></#comment>
+<#comment><!--开始：打开网页--></#comment>
+<#if uiaction.getFrontProcessType()=="OPENHTMLPAGE">
+,"fronttype":"${uiaction.frontProcessType}","htmlpageurl":"${uiaction.getHtmlPageUrl()}"
+</#if>
+<#comment><!--结束：打开网页--></#comment>
+</#if>};
+    this.regUIAction(uiaction_${uiaction_index});
+</#list>
+}
