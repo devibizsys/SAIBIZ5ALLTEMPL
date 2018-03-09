@@ -1,1 +1,0 @@
-new IBizFormGroup({id:'${item.uniqueId}',name:'${item.name}',form:form})

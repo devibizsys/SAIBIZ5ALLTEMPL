@@ -1,1 +1,0 @@
-<div id="<%=strCId%>${item.uniqueId}" class="ibiz-form-${item.getDetailType()?lower_case} ${item.getColCssClass()} form-group<#if (item.getPSSysCss()??)> ${item.getPSSysCss().getCssName()}</#if>" style="min-height:${item.getContentHeight()}px;"></div>

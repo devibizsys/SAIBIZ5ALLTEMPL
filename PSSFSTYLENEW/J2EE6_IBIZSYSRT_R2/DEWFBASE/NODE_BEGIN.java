@@ -1,4 +1,0 @@
-${delogicnodeheader.code}
-
-
-${delogicnodebottom.code}

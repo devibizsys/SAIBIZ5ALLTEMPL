@@ -1,1 +1,0 @@
-{name: '${item.name}',type: '${srfextjsdatatype(item.getDataType())}'}

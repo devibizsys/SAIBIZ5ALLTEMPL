@@ -1,1 +1,0 @@
-{panelStyle:'${ctrl.getPanelStyle()}'<#if ctrl.getPSAjaxControlParam()??><#assign ctrParams= ctrl.getPSAjaxControlParam()><#if ctrParams.containsCtrlParam("READONLY")><#if ctrParams.getCtrlParam("READONLY")?lower_case == 'true'>,readonly:true<#else>,readonly:false</#if></#if></#if>}

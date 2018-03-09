@@ -1,1 +1,0 @@
-checkFieldStringLengthRule("${item.getDEFName()?upper_case}", et, bTempMode,<#if item.getMinValue()??>${item.getMinValue()?c}<#else>null</#if>,<#if item.isIncludeMinValue()>true<#else>false</#if>,<#if item.getMaxValue()??>${item.getMaxValue()?c}<#else>null</#if>,<#if item.isIncludeMaxValue()>true<#else>false</#if>,"${item.ruleInfo}")

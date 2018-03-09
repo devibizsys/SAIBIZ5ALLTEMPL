@@ -1,1 +1,0 @@
-<INPUT type="hidden" name="${item.name}" id="${item.uniqueId}">

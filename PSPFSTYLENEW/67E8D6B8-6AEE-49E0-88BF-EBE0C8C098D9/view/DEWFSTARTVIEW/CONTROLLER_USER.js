@@ -1,1 +1,0 @@
-var ${view.codeName}Controller = ${view.codeName}ControllerBase.extend({});

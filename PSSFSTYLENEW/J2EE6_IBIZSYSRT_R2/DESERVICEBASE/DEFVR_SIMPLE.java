@@ -1,1 +1,0 @@
-checkFieldSimpleRule("${item.getDEFName()?upper_case}", et, bTempMode,"${item.getPSDBValueOPId()}",<#if item.getParamType()??>"${item.getParamType()}"<#else>null</#if>,<#if item.getParamValue()??>"${item.getParamValue()}"<#else>null</#if>,"${item.ruleInfo}",<#if item.isKeyCond()>false<#else>true</#if>)

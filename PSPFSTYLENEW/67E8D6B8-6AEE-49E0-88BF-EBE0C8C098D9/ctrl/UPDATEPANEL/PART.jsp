@@ -1,1 +1,0 @@
-<div id="<%=strCId%>${ctrl.name}"></div>

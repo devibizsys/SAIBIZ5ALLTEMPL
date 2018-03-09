@@ -1,1 +1,0 @@
-{text: "${item.caption}", width: ${item.width}, dataIndex: '${item.dataItemName}'}
